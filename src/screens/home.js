@@ -1,10 +1,11 @@
 import React from "react"
-import Button from "../components/button"
+import { Button, Input } from "components/common"
 
 const Home = () => {
   return (
     <>
       <Button>Hola</Button>
+      <Input></Input>
     </>
   )
 }
