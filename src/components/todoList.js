@@ -13,12 +13,12 @@ const TodoList = ({ listName, ...rest }) => {
 
   const handleAdd = (todo) => {
     setTodos([
-      ...todos.filter((x) => x.id !== todo.id),
       {
         id: getNextId(todo.id),
         text: todo.text,
         completed: todo.completed,
       },
+      ...todos.filter((x) => x.id !== todo.id),
     ])
   }
   const handleEdit = (todo) => {
@@ -31,6 +31,9 @@ const TodoList = ({ listName, ...rest }) => {
   }
   return (
     <ul>
+      <li>
+        <TodoForm key="new" onSave={handleAdd} />
+      </li>
       {todos.length > 0
         ? todos.map((todo) => (
             <Todo
@@ -41,10 +44,6 @@ const TodoList = ({ listName, ...rest }) => {
             />
           ))
         : null}
-
-      <li>
-        <TodoForm key="new" onSave={handleAdd} />
-      </li>
     </ul>
   )
 }

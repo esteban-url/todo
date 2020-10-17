@@ -26,7 +26,7 @@ const TodoForm = ({ todo: initialTodo, onSave, ...rest }) => {
         />
         <button type="submit" className="btn btn-blue flex-none">
           <svg
-            className={`w-4 h-4`}
+            className={`w-6 h-6`}
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
