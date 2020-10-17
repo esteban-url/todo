@@ -35,7 +35,8 @@
     ]
   },
   "devDependencies": {
-    "tailwindcss": "^1.9.2",
-    "postcss-cli": "^8.1.0"
+    "postcss-cli": "^8.1.0",
+    "prop-types": "^15.7.2",
+    "tailwindcss": "^1.9.2"
   }
 }

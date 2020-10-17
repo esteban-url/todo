@@ -1,12 +1,12 @@
 import React from "react"
-import { Button, Input } from "components/common"
+import TodoList from "components/todoList"
 
 const Home = () => {
   return (
-    <>
-      <Button>Hola</Button>
-      <Input></Input>
-    </>
+    <div className="container  mx-auto">
+      <h1 className="text-2xl font-bold">TO DO</h1>
+      <TodoList listName="main" />
+    </div>
   )
 }
 export default Home
