@@ -81,22 +81,26 @@ const TodoList = ({ tenant = "esteban", listName = "main", ...rest }) => {
       setTodos([...todos.filter((x) => x.id !== result.id)])
     })
   }
-  const FilterButton = ({ filter = "all" }) => {
+  const FilterButton = ({ filter = "all", symbol }) => {
     filter = filter.toLowerCase()
     return (
       <button
         onClick={() => setShowFilter(filter)}
         className={`btn ${showFilter === filter ? "btn-blue" : "btn-gray"}`}
       >
-        {filter} ({todosCounts[filter]})
+        <Emoji symbol={symbol} label={filter} />
+        <span className="ml-2">
+          {filter} ({todosCounts[filter]}
+        </span>
+        )
       </button>
     )
   }
   return (
     <>
-      <FilterButton filter="all" />
-      <FilterButton filter="completed" />
-      <FilterButton filter="pending" />
+      <FilterButton symbol="📘" filter="all" />
+      <FilterButton symbol="😎" filter="completed" />
+      <FilterButton symbol="⏱" filter="pending" />
       {isLoading ? <span className="text-gray-500">loading....</span> : null}
       {isError ? (
         <p className="text-red-500">There's been an error: {error.message}</p>
