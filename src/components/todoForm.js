@@ -4,12 +4,12 @@ const TodoForm = ({ todo: initialTodo, onSave, ...rest }) => {
   const [todo, setTodo] = React.useState(initialTodo)
 
   const handleChange = (event) => {
-    setTodo({ ...todo, text: event.target.value })
+    setTodo({ ...todo, title: event.target.value })
   }
   const handleSubmit = (event) => {
     event.preventDefault()
-    if (todo.text === "") return
-    setTodo({ id: null, text: "", completed: false })
+    if (todo.title.trim() === "") return
+    setTodo({ id: null, title: "", completed: false })
 
     onSave(todo)
   }
@@ -19,7 +19,7 @@ const TodoForm = ({ todo: initialTodo, onSave, ...rest }) => {
       <div className="flex">
         <input
           className="input"
-          value={todo.text}
+          value={todo.title}
           placeholder="add a new item..."
           onChange={handleChange}
           type="text"
@@ -49,7 +49,7 @@ TodoForm.propTypes = {
   onSave: PropTypes.func,
 }
 TodoForm.defaultProps = {
-  todo: { id: null, text: "", completed: false },
+  todo: { id: null, title: "", completed: false },
 }
 
 export default TodoForm

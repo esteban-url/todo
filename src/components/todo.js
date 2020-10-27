@@ -81,9 +81,9 @@ const Todo = ({ todo, onDelete, onEdit, ...rest }) => {
               todo.completed ? "line-through text-gray-500" : ""
             }`}
           >
-            {todo.text}
+            {todo.title}
           </span>
-          <div className="opacity-0 group-hover:opacity-100">
+          <div className="opacity-0 group-hover:opacity-100 group-focus:opacity-100">
             <CompleteButton />
 
             <button
@@ -132,6 +132,6 @@ Todo.propTypes = {
   onSave: PropTypes.func,
 }
 Todo.defaultProps = {
-  todo: { id: null, text: "asd", completed: false },
+  todo: { id: null, title: "asd", completed: false },
 }
 export default Todo

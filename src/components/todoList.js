@@ -1,21 +1,25 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import PropTypes from "prop-types"
 import Todo from "./todo"
 import TodoForm from "./todoForm"
-import { useLocalStorageState } from "hooks/useLocalStorageState"
+import { client } from "utils/api-client"
+import { useAsync } from "hooks/useAsync"
 
-const TodoList = ({ listName, ...rest }) => {
-  const [todos, setTodos] = useLocalStorageState(`todos:${listName}`, [])
+const TodoList = ({ tenant = "esteban", listName = "main", ...rest }) => {
+  const { error, run, isLoading, isError } = useAsync()
+
+  useEffect(() => {
+    if (!listName || !tenant) return
+    run(client(`t/${tenant}/${listName}`)).then((result) => setTodos(result))
+  }, [run, tenant, listName])
+
+  const [todos, setTodos] = useState([])
   const [showFilter, setShowFilter] = React.useState("all")
 
   const todosCounts = {
-    all: todos.length,
-    completed: todos.filter((x) => x.completed).length,
-    pending: todos.filter((x) => !x.completed).length,
-  }
-  const getNextId = (id) => {
-    if (id) return id
-    return todos.length === 0 ? 1 : Math.max(...todos.map((x) => x.id)) + 1
+    all: todos ? todos.length : 0,
+    completed: todos ? todos.filter((x) => x.completed).length : 0,
+    pending: todos ? todos.filter((x) => !x.completed).length : 0,
   }
 
   const filterTodos = (x) => {
@@ -32,22 +36,49 @@ const TodoList = ({ listName, ...rest }) => {
   }
   const handleAdd = (todo) => {
     setShowFilter("all")
-    setTodos([
-      {
-        id: getNextId(todo.id),
-        text: todo.text,
-        completed: todo.completed,
-      },
-      ...todos.filter((x) => x.id !== todo.id),
-    ])
+    run(
+      client(``, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          tenant,
+          list: listName,
+          title: todo.title,
+          completed: todo.completed,
+        }),
+      })
+    ).then((result) => setTodos([result, ...todos]))
   }
   const handleEdit = (todo) => {
-    const todosCopy = [...todos]
-    todosCopy[todosCopy.findIndex((x) => x.id === todo.id)] = todo
-    setTodos(todosCopy)
+    run(
+      client(todo.id, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          tenant,
+          list: listName,
+          title: todo.title,
+          completed: todo.completed,
+        }),
+      })
+    ).then((result) => {
+      const todosCopy = [...todos]
+      todosCopy[todosCopy.findIndex((x) => x.id === todo.id)] = result
+      setTodos(todosCopy)
+    })
   }
   const handleDetele = (todo) => {
-    setTodos([...todos.filter((x) => x.id !== todo.id)])
+    run(
+      client(todo.id, {
+        method: "DELETE",
+      })
+    ).then((result) => {
+      setTodos([...todos.filter((x) => x.id !== result.id)])
+    })
   }
   const FilterButton = ({ filter = "all" }) => {
     filter = filter.toLowerCase()
@@ -65,23 +96,33 @@ const TodoList = ({ listName, ...rest }) => {
       <FilterButton filter="all" />
       <FilterButton filter="completed" />
       <FilterButton filter="pending" />
-
+      {isLoading ? <span className="text-gray-500">loading....</span> : null}
+      {isError ? (
+        <p className="text-red-500">There's been an error: {error.message}</p>
+      ) : null}
       <ul>
         <li>
           <TodoForm key="new" onSave={handleAdd} />
         </li>
-        {todos.length > 0
-          ? todos
-              .filter((x) => filterTodos(x))
-              .map((todo) => (
-                <Todo
-                  key={todo.id}
-                  onDelete={handleDetele}
-                  onEdit={handleEdit}
-                  todo={todo}
-                />
-              ))
-          : null}
+
+        {todos.length > 0 ? (
+          todos
+            .filter((x) => filterTodos(x))
+            .map((todo) => (
+              <Todo
+                key={todo.id}
+                onDelete={handleDetele}
+                onEdit={handleEdit}
+                todo={todo}
+              />
+            ))
+        ) : (
+          <li>
+            <p className="p-5 mx-auto text-gray-500 ">
+              there's nothing to do, go take a nap or call a friend
+            </p>
+          </li>
+        )}
       </ul>
     </>
   )
