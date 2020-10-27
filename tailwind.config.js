@@ -9,6 +9,8 @@ module.exports = {
   theme: {
     extend: {},
   },
-  variants: { opacity: ["responsive", "hover", "focus", "group-hover"] },
+  variants: {
+    opacity: ["responsive", "hover", "focus", "group-hover", "group-focus"],
+  },
   plugins: [],
 }

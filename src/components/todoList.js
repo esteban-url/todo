@@ -4,6 +4,7 @@ import Todo from "./todo"
 import TodoForm from "./todoForm"
 import { client } from "utils/api-client"
 import { useAsync } from "hooks/useAsync"
+import Emoji from "./emoji"
 
 const TodoList = ({ tenant = "esteban", listName = "main", ...rest }) => {
   const { error, run, isLoading, isError } = useAsync()
@@ -119,7 +120,11 @@ const TodoList = ({ tenant = "esteban", listName = "main", ...rest }) => {
         ) : (
           <li>
             <p className="p-5 mx-auto text-gray-500 ">
-              there's nothing to do, go take a nap or call a friend
+              There's nothing to do, go take a nap or call a friend{" "}
+              <Emoji
+                label="smiling face with squinting eyes"
+                symbol="😊"
+              ></Emoji>
             </p>
           </li>
         )}
