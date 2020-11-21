@@ -23,7 +23,7 @@ const Home = () => {
   }, [run, auth])
 
   const login = (email, password) =>
-    auth.login(email, password).then((user) => setData(user))
+    auth.login(email, password, true).then((user) => setData(user))
 
   const register = (email, password) =>
     auth.signup(email, password).then((user) => setData(user))
