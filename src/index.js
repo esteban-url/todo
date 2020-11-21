@@ -3,10 +3,15 @@ import ReactDOM from "react-dom"
 import "./styles.css"
 import Home from "./screens/home"
 import * as serviceWorker from "./serviceWorker"
+import { AuthProvider } from "utils/auth-provider"
 
 ReactDOM.render(
   <React.StrictMode>
-    <Home />
+    <AuthProvider>
+      <div className="container mx-auto">
+        <Home />
+      </div>
+    </AuthProvider>
   </React.StrictMode>,
   document.getElementById("root")
 )

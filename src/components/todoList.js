@@ -140,7 +140,7 @@ const TodoList = ({ tenant = "esteban", listName = "main", ...rest }) => {
       >
         <Emoji symbol={symbol} label={filter} />
         <span className="ml-2">
-          {filter.toLowerCase()} ({todosCounts[filter]}
+          {filter.toLowerCase()} ({todosCounts[filter.toLowerCase()]}
         </span>
         )
       </button>
