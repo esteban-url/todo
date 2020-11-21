@@ -17,7 +17,7 @@ const LoginForm = ({ onSubmit, submitText, toggleView }) => {
 
   return (
     <>
-      <h1 className="text-2xl">{submitText}</h1>
+      <h1 className="py-3 text-2xl font-bold">{submitText}</h1>
       <form onSubmit={handleSubmit}>
         <div className="my-3">
           <label htmlFor="email">Email</label>

@@ -22,18 +22,16 @@ const Home = () => {
     run(auth.getUser())
   }, [run, auth])
 
-  const logout = () => {
-    auth.currentUser().logout()
-    setData(null)
-  }
-
   const login = (email, password) =>
     auth.login(email, password).then((user) => setData(user))
+
   const register = (email, password) =>
     auth.signup(email, password).then((user) => setData(user))
+
   const handleLogout = (event) => {
     event.preventDefault()
-    logout()
+    auth.currentUser().logout()
+    setData(null)
   }
   if (isLoading || isIdle) {
     return <Spinner />
@@ -49,9 +47,14 @@ const Home = () => {
   if (isSuccess) {
     return user ? (
       <>
-        <div className=" flex justify-between">
-          <h1 className="p-3 text-2xl font-bold">TO DO</h1>
-          <button onClick={handleLogout}>logout</button>
+        <div className=" flex justify-between items-center">
+          <h1 className="py-3 text-2xl font-bold">TO DO</h1>
+          <div>
+            <span className="text-gray-500">{auth.currentUser().email} - </span>
+            <button className="btn-blue" onClick={handleLogout}>
+              logout
+            </button>
+          </div>
         </div>
         <TodoList tenant={auth.currentUser().email} listName="main" />
         <TodoList tenant={auth.currentUser().email} listName="second" />
